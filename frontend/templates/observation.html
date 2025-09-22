@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/static/styles/general.css" />
+  </head>
+  <body>
+    <main class="frame observation-page">
+      {{ template "header" . }}
+      <img class="img" src="http://localhost:9000/pictures/background.jpg" alt="Фоновое изображение космоса" />
+      <header class="group">
+        <div class="rectangle" role="presentation"></div>
+        <h1 class="text-wrapper">Заявка № {{ .observation.ID_observation }}</h1>
+      </header>
+      <section class="contact-section">
+        <div class="rectangle-2" role="presentation"></div>
+        <input type="text" id="contact-info" class="contact-input" placeholder="Введите ваше имя и почту для связи" aria-label="Введите ваше имя и почту для связи" />
+      </section>
+      <section class="observation-cards">
+      {{ range $index, $day := .observationDays }}
+      <article class="observation-card" role="region" aria-labelledby="asteroid-entry-{{$index}}">
+        <img class="image" src="{{ $day.Image }}" alt="Изображение астероида" />
+        <div class="element">
+          <span class="date-label">Дата:</span>
+          <time datetime="{{ $day.Date }}">{{ $day.Date }}</time>
+        </div>
+        <div class="RA-DEC">
+          <h3>Земля:</h3>
+          <div>RA: {{ $day.EarthRA | printf "%.4f" }}°</div>
+          <div>DEC: {{ $day.EarthDEC | printf "%.4f" }}°</div>
+          <div>Расстояние: {{ $day.EarthDistance | printf "%.4f" }} а.е.</div>
+        </div>
+        <div class="asteroid-block">
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <div class="result-label">Астероид:</div>
+          </div>
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <input type="text" class="RA" placeholder="RA:" aria-label="Прямое восхождение астероида" />
+          </div>
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <input type="text" class="DEC" placeholder="DEC:" aria-label="Склонение астероида" />
+          </div>
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <input type="text" class="element-2" placeholder="Расстояние:" aria-label="Расстояние до солнца" />
+          </div>
+        </div>
+        <div class="result-block">
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <div class="result-label">Результат (км):</div>
+          </div>
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <output class="text-wrapper-3">58.800.000</output>
+          </div>
+        </div>
+        <button class="trash-icon-icons-com" type="button" aria-label="Удалить запись об астероиде">
+          <img src="http://localhost:9000/pictures/trash.svg" alt="" />
+        </button>
+      </article>
+      {{ end }}
+      </section>
+      
+      <div class="frame-wrapper">
+        <div class="div-wrapper"><div class="text-wrapper-4">Следите за астероидами</div></div>
+      </div>
+    </main>
+  </body>
+</html>
+
+</html>
