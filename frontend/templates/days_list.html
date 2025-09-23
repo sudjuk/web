@@ -7,7 +7,7 @@
   </head>
   <body>
     <div class="frame">
-      {{ template "header" . }}
+      <div class="div-wrapper"><a href="/astronomy" class="text-wrapper-3">AstroDist</a></div>
       <img class="img" src="http://localhost:9000/pictures/background.jpg" />
       <img class="img img-mirror" src="http://localhost:9000/pictures/background.jpg" />
       <div class="group">
@@ -25,7 +25,6 @@
           </div>
         </a>
       </div>
-      <div class="div-wrapper"><a href="/astronomy" class="text-wrapper-3">AstroDist</a></div>
       
       <div class="days-grid">
       {{ range $index, $day := .days }}
