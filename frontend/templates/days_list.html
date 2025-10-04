@@ -13,12 +13,12 @@
       <div class="group">
         <div class="rectangle"></div>
         <form action="/astronomy" method="GET" class="search-form">
-          <input type="text" name="query" value="{{ .query }}" placeholder="Введите дату (например: 21.02.2025)" class="search-input" />
+          <input type="text" name="name" value="{{ .query }}" placeholder="Введите дату (например: 21.02.2025)" class="search-input" />
         </form>
       </div>
       <div class="div">
         <a href="/observation/{{ .observationId }}">
-          <img class="vector" src="http://localhost:9000/pictures/corzina.svg" />
+          <img class="vector" src="http://localhost:9000/pictures/corzina.svg?v={{ .timestamp }}" />
           <div class="group-2">
             <div class="ellipse"></div>
             <div class="text-wrapper-2">{{ .counter }}</div>
@@ -32,12 +32,10 @@
         <img class="image" src="{{ $day.Image }}" />
         <div class="text-wrapper-4">{{ $day.Date }}</div>
         <p class="RA-DEC">
-          Координаты Земли относительно Солнца в этот день: <br />RA: {{ $day.EarthRA | printf "%.4f" }}° <br />DEC: {{ $day.EarthDEC | printf "%.4f" }}° <br />Расстояние: {{ $day.EarthDistance | printf "%.4f" }} а.е.
+          Координаты Земли относительно Солнца в этот день: <br />RA: {{ $day.EarthRA | printf "%.4f" }}° <br />DEC: {{ $day.EarthDEC | printf "%.4f" }}°
         </p>
         <div class="div-3">
           <div class="group-3">
-            <div class="rectangle-2"></div>
-            <div class="text-wrapper-5">Добавить</div>
           </div>
           <a href="/day_details/{{ $day.ID }}" class="group-4">
             <div class="rectangle-3"></div>

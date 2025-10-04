@@ -29,7 +29,6 @@
           <h3>Земля:</h3>
           <div>RA: {{ $day.EarthRA | printf "%.4f" }}°</div>
           <div>DEC: {{ $day.EarthDEC | printf "%.4f" }}°</div>
-          <div>Расстояние: {{ $day.EarthDistance | printf "%.4f" }} а.е.</div>
         </div>
         <div class="asteroid-block">
           <div class="group-2">
@@ -38,32 +37,25 @@
           </div>
           <div class="group-2">
             <div class="rectangle-3" role="presentation"></div>
-            <input type="text" class="RA" placeholder="RA:" aria-label="Прямое восхождение астероида" />
+            <input type="text" class="RA" placeholder="RA:" aria-label="Прямое восхождение астероида" value="{{ $day.AsteroidRA | printf "%.4f" }}" />
           </div>
           <div class="group-2">
             <div class="rectangle-3" role="presentation"></div>
-            <input type="text" class="DEC" placeholder="DEC:" aria-label="Склонение астероида" />
-          </div>
-          <div class="group-2">
-            <div class="rectangle-3" role="presentation"></div>
-            <input type="text" class="element-2" placeholder="Расстояние:" aria-label="Расстояние до солнца" />
+            <input type="text" class="DEC" placeholder="DEC:" aria-label="Склонение астероида" value="{{ $day.AsteroidDEC | printf "%.4f" }}" />
           </div>
         </div>
-        <div class="result-block">
-          <div class="group-2">
-            <div class="rectangle-3" role="presentation"></div>
-            <div class="result-label">Результат (км):</div>
-          </div>
-          <div class="group-2">
-            <div class="rectangle-3" role="presentation"></div>
-            <output class="text-wrapper-3">58.800.000</output>
-          </div>
-        </div>
-        <button class="trash-icon-icons-com" type="button" aria-label="Удалить запись об астероиде">
-          <img src="http://localhost:9000/pictures/trash.svg" alt="" />
-        </button>
+        
       </article>
       {{ end }}
+      </section>
+      
+      <!-- Общий результат для всей заявки -->
+      <section class="global-result-section">
+        <div class="rectangle-2" role="presentation"></div>
+        <div class="global-result-content">
+          <div class="global-result-label">Общий результат заявки (км):</div>
+          <div class="global-result-value">{{ .result | printf "%.0f" }}</div>
+        </div>
       </section>
       
       <div class="frame-wrapper">

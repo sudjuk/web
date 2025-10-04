@@ -1,7 +1,7 @@
 package repository
 
 import (
-    "errors"
+	"errors"
     "fmt"
     "strings"
 )
@@ -13,6 +13,11 @@ func NewRepository() (*Repository, error) {
 	return &Repository{}, nil
 }
 
+type Observation struct {
+	ID_observation int
+	Description    string
+	Result         float64  // результат заявки в км
+}
 type Day struct {
 	ID          int
 	Date        string
@@ -21,8 +26,14 @@ type Day struct {
 	Image       string
     EarthRA     float64
     EarthDEC    float64
-    EarthDistance float64
     BodiesText  string
+    AsteroidRA  float64  // координаты астероида
+    AsteroidDEC float64
+}
+
+type AsteroidData struct {
+    RA  float64
+    DEC float64
 }
 
 var ErrDayNotFound = errors.New("day not found")
@@ -33,78 +44,90 @@ var days = []Day{
 		Date:        "21.02.2025",
 		Description: "Позиции небесных тел на 21 февраля 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-		Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     154.2308,
-        EarthDEC:    10.6731,
-        EarthDistance: 0.9890,
-        BodiesText:  "Bennu:\nRA: 133.5752°\nDEC: 22.4028°\nРасстояние: 0.9829 а.е.\nEros:\nRA: 290.8563°\nDEC: -24.9965°\nРасстояние: 1.7666 а.е.\nVesta:\nRA: 200.9185°\nDEC: -1.1438°\nРасстояние: 2.2287 а.е.",
+		Image:       "http://localhost:9000/pictures/bennu.jpeg",
+		EarthRA:     154.2308,
+		EarthDEC:    10.6731,
+		AsteroidRA:  133.5752,
+		AsteroidDEC: 22.4028,
+		BodiesText:  "Bennu:\nRA: 133.5752°\nDEC: 22.4028°\nEros:\nRA: 290.8563°\nDEC: -24.9965°\nVesta:\nRA: 200.9185°\nDEC: -1.1438°",
 	},
 	{
 		ID:          2,
 		Date:        "20.03.2025",
 		Description: "Позиции небесных тел на 20 марта 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-		Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     179.3340,
-        EarthDEC:    0.2892,
-        EarthDistance: 0.9958,
-        BodiesText:  "Bennu:\nRA: 158.8320°\nDEC: 11.7454°\nРасстояние: 1.0700 а.е.\nEros:\nRA: 300.9850°\nDEC: -21.4905°\nРасстояние: 1.7813 а.е.\nVesta:\nRA: 208.5728°\nDEC: -4.3249°\nРасстояние: 2.2073 а.е.",
+		Image:       "http://localhost:9000/pictures/eros.jpg",
+		EarthRA:     179.3340,
+		EarthDEC:    0.2892,
+		AsteroidRA:  158.8320,
+		AsteroidDEC: 11.7454,
+		BodiesText:  "Bennu:\nRA: 158.8320°\nDEC: 11.7454°\nEros:\nRA: 300.9850°\nDEC: -21.4905°\nVesta:\nRA: 208.5728°\nDEC: -4.3249°",
 	},
 	{
 		ID:          3,
 		Date:        "16.04.2025",
 		Description: "Позиции небесных тел на 16 апреля 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-		Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     204.0161,
-        EarthDEC:    -10.0047,
-        EarthDistance: 1.0034,
-        BodiesText:  "Bennu:\nRA: 178.5265°\nDEC: 1.0704°\nРасстояние: 1.1594 а.е.\nEros:\nRA: 310.5254°\nDEC: -17.4401°\nРасстояние: 1.7809 а.е.\nVesta:\nRA: 216.4333°\nDEC: -7.4845°\nРасстояние: 2.1887 а.е.",
+		Image:       "http://localhost:9000/pictures/final.png",
+		EarthRA:     204.0161,
+		EarthDEC:    -10.0047,
+		AsteroidRA:  178.5265,
+		AsteroidDEC: 1.0704,
+		BodiesText:  "Bennu:\nRA: 178.5265°\nDEC: 1.0704°\nEros:\nRA: 310.5254°\nDEC: -17.4401°\nVesta:\nRA: 216.4333°\nDEC: -7.4845°",
 	},
 	{
 		ID:          4,
 		Date:        "13.05.2025",
 		Description: "Позиции небесных тел на 13 мая 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-		Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     229.7279,
-        EarthDEC:    -18.3008,
-        EarthDistance: 1.0103,
-        BodiesText:  "Bennu:\nRA: 195.3633°\nDEC: -8.2895°\nРасстояние: 1.2382 а.е.\nEros:\nRA: 319.7108°\nDEC: -12.9146°\nРасстояние: 1.7654 а.е.\nVesta:\nRA: 224.5325°\nDEC: -10.5492°\nРасстояние: 2.1732 а.е.",
+		Image:       "http://localhost:9000/pictures/galileo.jpg",
+		EarthRA:     229.7279,
+		EarthDEC:    -18.3008,
+		AsteroidRA:  195.3633,
+		AsteroidDEC: -8.2895,
+		BodiesText:  "Bennu:\nRA: 195.3633°\nDEC: -8.2895°\nEros:\nRA: 319.7108°\nDEC: -12.9146°\nVesta:\nRA: 224.5325°\nDEC: -10.5492°",
 	},
 	{
 		ID:          5,
 		Date:        "09.06.2025",
 		Description: "Позиции небесных тел на 9 июня 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-		Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     257.0373,
-        EarthDEC:    -22.9007,
-        EarthDistance: 1.0150,
-        BodiesText:  "Bennu:\nRA: 211.0160°\nDEC: -16.0451°\nРасстояние: 1.2992 а.е.\nEros:\nRA: 328.7896°\nDEC: -7.9499°\nРасстояние: 1.7351 а.е.\nVesta:\nRA: 232.8950°\nDEC: -13.4388°\nРасстояние: 2.1612 а.е.",
+		Image:       "http://localhost:9000/pictures/idle.jpg",
+		EarthRA:     257.0373,
+		EarthDEC:    -22.9007,
+		AsteroidRA:  211.0160,
+		AsteroidDEC: -16.0451,
+		BodiesText:  "Bennu:\nRA: 211.0160°\nDEC: -16.0451°\nEros:\nRA: 328.7896°\nDEC: -7.9499°\nVesta:\nRA: 232.8950°\nDEC: -13.4388°",
 	},
 	{
 		ID:          6,
 		Date:        "06.07.2025",
 		Description: "Позиции небесных тел на 6 июля 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-		Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     285.0358,
-        EarthDEC:    -22.7161,
-        EarthDistance: 1.0166,
-        BodiesText:  "Bennu:\nRA: 226.5102°\nDEC: -22.1504°\nРасстояние: 1.3387 а.е.\nEros:\nRA: 338.0380°\nDEC: -2.5617°\nРасстояние: 1.6903 а.е.\nVesta:\nRA: 241.5318°\nDEC: -16.0694°\nРасстояние: 2.1531 а.е.",
+		Image:       "http://localhost:9000/pictures/lutec.jpg",
+		EarthRA:     285.0358,
+		EarthDEC:    -22.7161,
+		AsteroidRA:  226.5102,
+		AsteroidDEC: -22.1504,
+		BodiesText:  "Bennu:\nRA: 226.5102°\nDEC: -22.1504°\nEros:\nRA: 338.0380°\nDEC: -2.5617°\nVesta:\nRA: 241.5318°\nDEC: -16.0694°",
 	},
 	{
 		ID:          7,
 		Date:        "02.08.2025",
 		Description: "Позиции небесных тел на 2 августа 2025 года",
 		FullInfo:    "Астрономические координаты Земли, астероидов Bennu, Eros и Vesta на указанную дату. Координаты представлены в экваториальной системе координат.",
-			Image:       "http://localhost:9000/pictures/earth.png",
-        EarthRA:     312.0604,
-        EarthDEC:    -17.8398,
-        EarthDistance: 1.0148,
-        BodiesText:  "Bennu:\nRA: 242.4963°\nDEC: -26.5315°\nРасстояние: 1.3550 а.е.\nEros:\nRA: 347.7894°\nDEC: 3.2361°\nРасстояние: 1.6320 а.е.\nVesta:\nRA: 250.4343°\nDEC: -18.3572°\nРасстояние: 2.1491 а.е.",
+			Image:       "http://localhost:9000/pictures/vesta.jpeg",
+		EarthRA:     312.0604,
+		EarthDEC:    -17.8398,
+		AsteroidRA:  242.4963,
+		AsteroidDEC: -26.5315,
+		BodiesText:  "Bennu:\nRA: 242.4963°\nDEC: -26.5315°\nEros:\nRA: 347.7894°\nDEC: 3.2361°\nVesta:\nRA: 250.4343°\nDEC: -18.3572°",
 	},
+}
+
+// Простая конфигурация заявки: список ID дней, которые нужно отобразить
+var observationDayIDs = map[int][]int{
+	1: {1, 3}, // заявка 1 содержит дни: 21.02.2025 (ID=1) и 16.04.2025 (ID=3)
 }
 
 func (r *Repository) GetDays() ([]Day, error) {
@@ -147,33 +170,17 @@ func (r *Repository) GetDaysByDate(date string) ([]Day, error) {
 	return result, nil
 }
 
-type Observation struct {
-    ID_observation int
-    Description    string
-}
-
-var observationList = map[int]Observation{
-    1: {
-        ID_observation: 1,
-        Description:    "Астрономическая обсерватория. Наблюдение №1.",
-    },
-}
-
-// Простая конфигурация заявки: список ID дней, которые нужно отобразить
-var observationDayIDs = map[int][]int{
-    1: {1, 3}, // заявка 1 содержит дни: 21.02.2025 (ID=1) и 16.04.2025 (ID=3)
-}
 
 // GetObservationDays возвращает список дней для заявки по массиву ID
 func (r *Repository) GetObservationDays(observationID int) ([]Day, error) {
-    ids, ok := observationDayIDs[observationID]
+	ids, ok := observationDayIDs[observationID]
     if !ok {
-        return []Day{}, nil
+		return []Day{}, nil
     }
 
     allDays, err := r.GetDays()
     if err != nil {
-        return nil, err
+		return nil, err
     }
 
     // индекс по ID дня для быстрого доступа
@@ -193,4 +200,15 @@ func (r *Repository) GetObservationDays(observationID int) ([]Day, error) {
 
 func (r *Repository) GetObservation(id int) (Observation, error) {
 	return observationList[id], nil
+}
+
+
+
+
+var observationList = map[int]Observation{
+	1: {
+		ID_observation: 1,
+		Description:    "Астрономическая обсерватория. Наблюдение №1.",
+		Result:         58800000.0, // результат в км
+	},
 }

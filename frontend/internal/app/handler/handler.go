@@ -4,6 +4,7 @@ import (
     "front_start/internal/app/repository"
     "net/http"
     "strconv"
+    "time"
 
     "github.com/gin-gonic/gin"
     "github.com/sirupsen/logrus"
@@ -24,7 +25,7 @@ func (h *Handler) GetDays(ctx *gin.Context) {
 	var err error
 	observationId := 1
 
-	searchQuery := ctx.Query("query") // получаем значение из поля поиска
+	searchQuery := ctx.Query("name") // получаем значение из поля поиска
 	if searchQuery == "" {            // если поле поиска пусто, то просто получаем из репозитория все записи
 		days, err = h.Repository.GetDays()
     if err != nil {
@@ -54,6 +55,7 @@ func (h *Handler) GetDays(ctx *gin.Context) {
 		"query":    searchQuery,
 		"counter":  currentCounter,
 		"observationId": observationId,
+		"timestamp": time.Now().Unix(),
 	})
 }
 
@@ -111,5 +113,6 @@ func (h *Handler) GetObservation(ctx *gin.Context) {
     ctx.HTML(http.StatusOK, "observation.html", gin.H{
         "observation":      observation,
         "observationDays":  obsDays,
+        "result":          observation.Result,
     })
 }
