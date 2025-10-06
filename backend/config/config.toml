@@ -1,9 +1,0 @@
-[db]
-host = "localhost"
-port = "5433"
-user = "lab2user"
-pass = "lab2pass"
-name = "lab2db"
-sslmode = "disable"
-
-
