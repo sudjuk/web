@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/static/styles/general.css" />
+  </head>
+  <body>
+    <main class="frame observation-page">
+      <div class="div-wrapper"><a href="/astronomy" class="text-wrapper-3">AstroDist</a></div>
+      <img class="img" src="http://localhost:9000/pictures/background.jpg" alt="Фоновое изображение космоса" />
+      <header class="group">
+        <div class="rectangle" role="presentation"></div>
+        <h1 class="text-wrapper">Заявка № {{ .observation.ID_observation }}</h1>
+      </header>
+      <section class="contact-section">
+        <div class="rectangle-2" role="presentation"></div>
+        <input type="text" id="contact-info" class="contact-input" placeholder="Введите ваше имя и почту для связи" aria-label="Введите ваше имя и почту для связи" />
+      </section>
+      <section class="observation-cards">
+      {{ range $index, $day := .observationDays }}
+      <article class="observation-card" role="region" aria-labelledby="asteroid-entry-{{$index}}">
+        <img class="image" src="{{ $day.Image }}" alt="Изображение астероида" />
+        <div class="element">
+          <span class="date-label">Дата:</span>
+          <time datetime="{{ $day.Date }}">{{ $day.Date }}</time>
+        </div>
+        <div class="RA-DEC">
+          <h3>Земля:</h3>
+          <div>RA: {{ $day.EarthRA | printf "%.4f" }}°</div>
+          <div>DEC: {{ $day.EarthDEC | printf "%.4f" }}°</div>
+        </div>
+        <div class="asteroid-block">
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <div class="result-label">Астероид:</div>
+          </div>
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <input type="text" class="RA" placeholder="RA:" aria-label="Прямое восхождение астероида" value="{{ $day.AsteroidRA | printf "%.4f" }}" />
+          </div>
+          <div class="group-2">
+            <div class="rectangle-3" role="presentation"></div>
+            <input type="text" class="DEC" placeholder="DEC:" aria-label="Склонение астероида" value="{{ $day.AsteroidDEC | printf "%.4f" }}" />
+          </div>
+        </div>
+        
+      </article>
+      {{ end }}
+      </section>
+      
+      <!-- Общий результат для всей заявки -->
+      <section class="global-result-section">
+        <div class="rectangle-2" role="presentation"></div>
+        <div class="global-result-content">
+          <div class="global-result-label">Общий результат заявки (км):</div>
+          <div class="global-result-value">{{ .result | printf "%.0f" }}</div>
+        </div>
+      </section>
+      
+      <div class="frame-wrapper">
+        <div class="div-wrapper"><div class="text-wrapper-4">Следите за астероидами</div></div>
+      </div>
+      <form method="POST" action="/order/delete">
+        <input type="hidden" name="observation_id" value="{{ .observation.ID_observation }}" />
+        <button type="submit" class="delete-fab" aria-label="Удалить заявку">
+          <img class="vector" src="http://localhost:9000/pictures/trash.svg" alt="Удалить" />
+          <span class="visually-hidden">Удалить заявку</span>
+        </button>
+      </form>
+    </main>
+  </body>
+</html>
+
+</html>
