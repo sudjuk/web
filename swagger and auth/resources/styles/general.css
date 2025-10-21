@@ -1,0 +1,946 @@
+/* Reset native button styles for the Add button while preserving existing inner layout */
+button.group-3 {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+button.group-3:focus {
+  outline: none;
+}
+
+/* Optional accessible focus style to match your theme */
+button.group-3:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 2px;
+}
+.asteroid-request-page .asteroid-block {
+  position: relative;
+  width: 380px;
+  height: 80px;
+  margin-top: -155px;
+  margin-left: -100px;
+}
+/* Asteroid header */
+.asteroid-request-page .asteroid-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 48px;
+}
+
+/* Asteroid labels row - separate from inputs */
+.asteroid-request-page .asteroid-labels-row {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  z-index: 1;
+}
+
+/* Asteroid inputs row - horizontal layout */
+.asteroid-request-page .asteroid-inputs-row {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  z-index: 2;
+}
+
+/* Individual input group */
+.asteroid-request-page .asteroid-input-group {
+  display: flex;
+  flex-direction: column;
+  width: 180px;
+  margin-top: 10px;
+  margin-left: -150px;
+}
+
+/* Add spacing between input groups */
+.asteroid-request-page .asteroid-input-group:first-child {
+  margin-right: 170px;
+}
+
+/* Asteroid labels - now independent */
+.asteroid-request-page .asteroid-label {
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 20px;
+  text-align: left;
+  height: 24px;
+  margin-top: 80px;
+  margin-left: -80px;
+  display: flex;
+  align-items: center;
+  width: 300px;
+}
+
+
+
+.asteroid-request-page .asteroid-block .group-2 {
+  position: relative;
+  width: 180px;
+  height: 48px;
+  margin: 0;
+}
+/* убрать рамку у заголовка Астероид: (теперь не нужно, так как заголовок убран) */
+
+/* Ensure asteroid input fields have borders */
+.asteroid-request-page .asteroid-block .rectangle-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 1px solid #d8d8e0;
+  background-color: #000000;
+}
+
+/* стили для инпутов внутри блока астероида */
+.asteroid-request-page .asteroid-block .RA,
+.asteroid-request-page .asteroid-block .DEC,
+.asteroid-request-page .asteroid-block .element-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+  padding-left: 10px;
+  color: #d8d8e0;
+  background: transparent;
+  border: none;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-size: 20px;
+}
+
+/* WebKit text color fix for inputs */
+.asteroid-request-page .asteroid-block input.RA,
+.asteroid-request-page .asteroid-block input.DEC,
+.asteroid-request-page .asteroid-block input.element-2 {
+  -webkit-text-fill-color: #d8d8e0;
+}
+
+/* small inline label inside the input row */
+.asteroid-request-page .asteroid-block .field-label { display: none; }
+@import url("https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css");
+* {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+/* Prevent horizontal scroll globally */
+html, body { overflow-x: hidden; }
+/* Prevent vertical scroll on body; allow it inside .frame when needed */
+body { overflow: hidden; }
+/* a blue color as a generic focus style */
+button:focus-visible {
+  outline: 2px solid #4a90e2 !important;
+  outline: -webkit-focus-ring-color auto 5px !important;
+}
+a {
+  text-decoration: none;
+}
+
+/* =========== Main Frame ============= */
+.frame {
+  background-color: #000000;
+  width: 100%;           /* avoid 100vw to prevent horizontal scroll due to scrollbar width */
+  height: 100vh;         /* lock to viewport height */
+  position: relative;
+  overflow-y: auto;      /* enable vertical scroll only when content exceeds */
+  overflow-x: hidden;    /* hard-disable horizontal scroll inside frame */
+}
+
+/* =========== Background Images ============= */
+.frame .img {
+  position: absolute;
+  top: 131px;
+  left: 0;
+  width: 100%;                        /* fit viewport width without causing overflow */
+  height: calc(100vh - 131px);        /* fill remaining height below header */
+  object-fit: cover;
+}
+
+/* mirrored second background just below the first */
+.frame .img-mirror {
+  top: calc(131px + (100vh - 131px)); /* start right after the first background */
+  transform: scaleY(-1);              /* vertical flip */
+}
+
+/* =========== Header ============= */
+.frame-wrapper { display:none; }
+
+.div-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  z-index: 5;
+  display: flex;
+
+  background-color: #000000;
+}
+
+.text-wrapper-3 {
+  position: relative;
+  width: auto;
+  height: 75px;
+  font-size: 48px;
+  display: flex;
+  align-items: center;  /* по центру по высоте */
+  justify-content: flex-start;
+  font-family: "Montserrat", Helvetica, Arial, sans-serif; /* не фиксируем Medium */
+  font-weight: 700 !important; /* принудительно жирный */
+  color: #f0f0fa;
+  text-align: left;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;       /* в одну строку */
+  text-decoration: none;  
+    /* как это теперь ссылка */
+}
+
+/* =========== Search Section ============= */
+.group {
+  position: absolute;
+  top: 154px;
+  left: 273px;
+  width: 1375px;
+  height: 95px;
+}
+
+/* Search form styles */
+.search-form {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-input {
+  width: 90%;
+  height: 63px;
+  background: transparent;
+  border: none;
+  color: #d8d8e0;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-size: 32px;
+  text-align: center;
+  outline: none;
+}
+
+.rectangle {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 1373px;
+  height: 79px;
+  background-color: #000000;
+  border-bottom: 1px solid #d8d8e0;
+}
+
+.text-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1373px;
+  height: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 32px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* =========== Cart/Telescope Button ============= */
+/* Floating cart: fixed at bottom-left */
+.div {
+  position: fixed !important;
+  left: 24px;
+  bottom: 24px;
+  width: 106px;   /* matches original aspect */
+  height: 106px;
+  border-radius: 53px;
+  border: 1px solid;
+  border-color: #d8d8e0;
+  z-index: 1000;
+}
+
+.vector {
+    position: absolute;
+  width: 79.25%;
+  height: 74.53%;
+  top: 12.26%;
+  left: 10.38%;
+  /* Увеличиваем размер иконки корзины */
+  transform: scale(1.2);
+  transform-origin: center;
+}
+
+.group-2 {
+  position: absolute;
+  top: 72px;
+  left: 66px;
+  width: 27px;
+  height: 25px;
+}
+
+/* Исправление для пустой корзины - увеличиваем размер контейнера иконки */
+.div .group-2:first-child {
+  width: 84px;
+  height: 79px;
+  top: 12px;
+  left: 11px;
+}
+
+.ellipse {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  background-color: #000000;
+  border-radius: 12.5px;
+  border: 1px solid;
+  border-color: #d8d8e0;
+}
+
+.text-wrapper-2 {
+  position: absolute;
+  top: -6px;
+  left: 8px;
+  width: 10px;
+  height: 12px;
+    display: flex;
+  align-items: center;
+    justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+/* =========== Day Cards ============= */
+/* New grid container for day cards */
+.days-grid {
+  position: absolute;
+  top: 337px;
+  left: 273px;
+  display: grid;
+  grid-template-columns: repeat(4, 314px);
+  column-gap: 40px; /* 273, 627, 981, 1335 → 354 step; 354-314=40 gap */
+  row-gap: 24px;
+}
+
+/* Unified day card style */
+.day-card {
+  display: flex;
+  flex-direction: column;
+  width: 314px;
+  height: 590px;
+  align-items: center;
+  gap: 22px;
+  padding: 2px 19px;
+  background-color: #000000;
+  border-radius: 27px;
+  border: 1px solid #d8d8e0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.image {
+  position: relative;
+  width: 228px;
+  height: 228px;
+  aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.text-wrapper-4 {
+  position: relative;
+    display: flex;  
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  height: 61px;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #f0f0fa;
+  font-size: 32px;
+    text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==== Fix: ensure day-card buttons look identical and ignore other .rectangle-2 rules ==== */
+.div-3 .rectangle-2,
+.div-3 .rectangle-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background-color: #000000;
+  border: 1px solid #d8d8e0;
+}
+
+.div-3 .text-wrapper-5,
+.div-3 .text-wrapper-6 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+    font-weight: 500;
+  color: #f0f0fa;
+  font-size: 18px;
+    text-align: center;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.RA-DEC {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 267px;
+  height: 137px;
+  font-family: "Montserrat-Medium", Helvetica;
+    font-weight: 500;
+  color: #d8d8e0;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* =========== Buttons ============= */
+.div-3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  margin-top: auto;          /* прижать кнопки к низу карточки */
+  padding-bottom: 12px;      /* отступ от нижнего края */
+}
+
+.group-3 {
+  position: relative;
+  flex: 1 1 0;
+  height: 56px;
+  min-width: 0;
+}
+
+.rectangle-2 {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  position: absolute;
+  background-color: #000000;
+  border: 1px solid #d8d8e0;
+}
+
+.text-wrapper-5 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #f0f0fa;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.group-4 {
+  position: relative;
+  flex: 1 1 0;
+  height: 56px;
+  min-width: 0;
+}
+
+.rectangle-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  border-radius: 14px;
+  border: 1px solid #d8d8e0;
+}
+
+.text-wrapper-6 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #f0f0fa;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+/* =========== Day Details Page ============= */
+.details-text {
+  position: absolute;
+  top: 270px;
+  left: 273px;
+  width: 702px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bennu-RA {
+  margin: 0;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 24px;
+  line-height: 1.3;
+  white-space: pre-line; /* показывать \n как перенос строки */
+}
+
+/* Preserve newlines for bodies text block */
+.bodies-text {
+  margin: 0;
+  color: #d8d8e0;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-size: 20px;
+  white-space: pre-wrap;
+}
+
+/* Day details header */
+.details-header {
+  position: absolute;
+  top: 207px;
+  left: 273px;
+  width: 1375px;
+  height: 95px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #d8d8e0;
+}
+
+.details-title {
+  font-family: "Montserrat", Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #d8d8e0;
+}
+
+.details-image {
+  position: absolute;
+  top: 340px;
+  left: 1000px;
+  width: 500px;
+  height: 400px;
+  object-fit: cover;
+}
+
+/* =========== Observation Page ============= */
+
+
+/* New unified observation cards layout */
+.asteroid-request-page .asteroid-request-cards {
+  position: relative;
+  margin-top: 351px;        /* first card below inputs */
+}
+.asteroid-request-page .asteroid-request-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  width: 1373px;
+  height: 230px;
+  padding: 11px 31px;
+  position: relative;
+  left: 273px;
+  background-color: #000000;
+  border-radius: 20px;
+  border: 1px solid #d8d8e0;
+}
+.asteroid-request-page .asteroid-request-card + .asteroid-request-card {
+  margin-top: 23px;
+}
+
+/* Contact section directly under order header */
+.contact-section {
+  position: absolute;
+  top: 249px;
+  left: 273px;
+  width: 1375px;
+  height: 95px;
+}
+
+/* Image fixed size 121x121 */
+.asteroid-request-page .image {
+  width: 121px;
+  height: 121px;
+  min-width: 121px;
+  min-height: 121px;
+  object-fit: cover;
+}
+
+/* Ensure main text blocks flex properly */
+.asteroid-request-page .element,
+.asteroid-request-page .RA-DEC,
+.asteroid-request-page .result-block { flex: 1 1 auto; }
+
+.asteroid-request-page .element { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.asteroid-request-page .RA-DEC { display: flex; flex-direction: column; align-items: center; justify-content: center; height: auto; width: auto;  left: -150px; }
+.asteroid-request-page fieldset.div-3 {
+  display: flex;
+  flex-direction: column;    /* stack inputs vertically */
+  gap: 8px;                  /* space between inputs */
+  width: 200px;              /* fixed width column */
+  max-width: 200px;
+  align-items: stretch;      /* make children fill width */
+}
+.asteroid-request-page .result-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 200px;
+  margin-left: auto;   /* push to the right, before trash icon */
+  margin-top: -25px;    /* vertical centering */
+  margin-bottom: auto; /* vertical centering */
+}
+.asteroid-request-page .result-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 198px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 20px;
+}
+
+/* Remove border for the label box (top row) */
+.asteroid-request-page .result-block .group-2:first-child .rectangle-3 {
+  border: none;
+}
+
+/* Inputs left-aligned text with small padding */
+.asteroid-request-page .RA,
+.asteroid-request-page .DEC,
+.asteroid-request-page .element-2 {
+  position: relative;           /* override global absolute */
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* Ensure input boxes are visible inside their containers */
+.asteroid-request-page .group-2,
+.asteroid-request-page .group-3 {
+  position: relative;
+  width: 200px;
+  height: 48px;
+  margin: 0;                 /* prevent negative margins from global styles */
+  align-self: stretch;       /* fill fieldset width */
+}
+
+/* In result block, the value box sits right under the label */
+.asteroid-request-page .result-block .group-2 {
+  align-self: flex-start;
+  width: 200px;
+}
+
+.asteroid-request-page .rectangle-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 1px solid #d8d8e0;
+}
+.contact-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: #d8d8e0;           /* same as search input */
+  font-size: 32px;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  text-align: center;        /* like search */
+  outline: none;
+  padding: 0;
+}
+
+.contact-input::placeholder { color: #d8d8e0; opacity: 0.6; }
+
+/* Ensure asteroid inputs placeholder is visible and same grey */
+.asteroid-request-page .asteroid-block .RA::placeholder,
+.asteroid-request-page .asteroid-block .DEC::placeholder,
+.asteroid-request-page .asteroid-block .element-2::placeholder { color: #d8d8e0; opacity: 0.6; }
+
+.date-label { display: block; }
+
+.RA-DEC h3 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  font-family: inherit;
+}
+
+fieldset.div-3 { border: none; margin: 0; padding: 0; }
+fieldset.div-3 legend { padding: 0; }
+
+.RA, .DEC, .element-2 {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+}
+
+.trash-icon-icons-com {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trash-icon-icons-com img { width: 38px; height: 38px; pointer-events: none; }
+.trash-icon-icons-com:hover { opacity: 0.8; }
+.trash-icon-icons-com:focus-visible { outline: 2px solid #4a90e2; outline-offset: 2px; border-radius: 4px; }
+
+output.text-wrapper-3 { display: flex; align-items: center; justify-content: center; }
+.p {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1373px;
+  height: 95px;
+  color: #d8d8e0;
+  font-size: 32px;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.rectangle-2 {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 1373px;
+  height: 79px;
+  background-color: #000000;
+  border-radius: 20px;
+  border: 1px solid;
+  border-color: #d8d8e0;
+}
+
+.element {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 193px;
+  height: 74px;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.text-wrapper-2 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+    height: 40px;
+  margin-top: -1.00px;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+    font-size: 24px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+
+.text-wrapper-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 198px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0 !important;   /* force light color */
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* Deduplicate: shared text box styles */
+.asteroid-request-page .result-label, .text-wrapper-3 {
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  color: #d8d8e0;
+  font-size: 20px;
+}
+
+.trash-icon-icons-com {
+  position: relative;
+  width: 38px;
+  height: 38px;
+}
+
+
+.text-wrapper-4 {
+  position: relative;
+  width: 632px;
+  height: 75px;
+  color: #f0f0fa;
+  font-size: 48px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Montserrat-Medium", Helvetica;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+/* Floating delete button on observation page (matches cart circle style) */
+.delete-fab {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  width: 106px;
+  height: 106px;
+  border-radius: 53px;
+  border: 1px solid #d8d8e0;
+  background: #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.delete-fab .vector {
+  width: 79.25%;
+  height: 74.53%;
+  transform: scale(1.2);
+  transform-origin: center;
+}
+.delete-fab:focus { outline: none; }
+.delete-fab:focus-visible { outline: 2px solid rgba(255,255,255,0.4); outline-offset: 3px; }
+
+/* helper for screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

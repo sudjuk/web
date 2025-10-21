@@ -1,0 +1,876 @@
+basePath: /
+definitions:
+  handler.asteroidRequestUpdateDTO:
+    properties:
+      comment:
+        type: string
+    type: object
+  handler.loginDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  handler.loginResponseDTO:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        description: в секундах
+        type: integer
+      token_type:
+        type: string
+    type: object
+  handler.mmUpdateDTO:
+    properties:
+      asteroidDEC:
+        type: number
+      asteroidRA:
+        type: number
+      asteroidRequestId:
+        type: integer
+      dayId:
+        type: integer
+    required:
+    - asteroidRequestId
+    - dayId
+    type: object
+  handler.moderateDTO:
+    properties:
+      action:
+        type: string
+      comment:
+        type: string
+    required:
+    - action
+    type: object
+  handler.profileUpdateDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  handler.registerDTO:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - login
+    - password
+    type: object
+  handler.serviceCreateDTO:
+    properties:
+      bodiesText:
+        type: string
+      description:
+        type: string
+      earthDEC:
+        type: number
+      earthRA:
+        type: number
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  handler.serviceUpdateDTO:
+    properties:
+      bodiesText:
+        type: string
+      description:
+        type: string
+      earthDEC:
+        type: number
+      earthRA:
+        type: number
+      name:
+        type: string
+    type: object
+  repository.Day:
+    properties:
+      asteroidDEC:
+        format: float64
+        type: number
+      asteroidRA:
+        format: float64
+        type: number
+      bodiesText:
+        type: string
+      date:
+        type: string
+      earthDEC:
+        format: float64
+        type: number
+      earthRA:
+        format: float64
+        type: number
+      fullInfo:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+    type: object
+  repository.PublicUser:
+    properties:
+      id:
+        type: integer
+      isModerator:
+        type: boolean
+      login:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: API для управления астрономическими наблюдениями и заявками на астероиды
+  title: Astronomy Asteroid Request API
+  version: "1.0"
+paths:
+  /api/asteroid-observations:
+    get:
+      description: Get list of asteroid observations with optional filtering
+      parameters:
+      - description: Filter by status
+        in: query
+        name: status
+        type: string
+      - description: Filter from date (YYYY-MM-DD)
+        in: query
+        name: from
+        type: string
+      - description: Filter to date (YYYY-MM-DD)
+        in: query
+        name: to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List asteroid observations
+      tags:
+      - Asteroid Observations
+  /api/asteroid-observations/{id}:
+    delete:
+      description: Soft delete asteroid observation (only by creator)
+      parameters:
+      - description: Asteroid request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete asteroid observation
+      tags:
+      - Asteroid Observations
+    get:
+      description: Get asteroid observation details by ID
+      parameters:
+      - description: Asteroid request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get asteroid observation by ID
+      tags:
+      - Asteroid Observations
+    put:
+      consumes:
+      - application/json
+      description: Update asteroid observation comment (only by creator)
+      parameters:
+      - description: Asteroid request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.asteroidRequestUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update asteroid observation
+      tags:
+      - Asteroid Observations
+  /api/asteroid-observations/{id}/moderate:
+    put:
+      consumes:
+      - application/json
+      description: Complete or reject asteroid observation (moderator only)
+      parameters:
+      - description: Asteroid request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Moderation action
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.moderateDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Moderate asteroid observation
+      tags:
+      - Asteroid Observations
+  /api/asteroid-observations/{id}/submit:
+    put:
+      description: Submit draft asteroid observation for moderation
+      parameters:
+      - description: Asteroid request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Submit asteroid observation
+      tags:
+      - Asteroid Observations
+  /api/asteroid-observations/cart:
+    get:
+      description: Get draft observation ID and item count for current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get cart icon info
+      tags:
+      - Asteroid Observations
+  /api/asteroid-request-items:
+    delete:
+      description: Delete item from asteroid observation (only by creator)
+      parameters:
+      - description: Asteroid request ID
+        in: query
+        name: asteroidRequestId
+        required: true
+        type: integer
+      - description: Day ID
+        in: query
+        name: dayId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete asteroid observation item
+      tags:
+      - Asteroid Observations
+    put:
+      consumes:
+      - application/json
+      description: Update asteroid coordinates in request item (only by creator)
+      parameters:
+      - description: Update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.mmUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update asteroid observation item
+      tags:
+      - Asteroid Observations
+  /api/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.loginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.loginResponseDTO'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login user
+      tags:
+      - Auth
+  /api/auth/logout:
+    post:
+      description: Invalidate user session
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Logout user
+      tags:
+      - Auth
+  /api/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: Registration data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.registerDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/repository.PublicUser'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Register new user
+      tags:
+      - Auth
+  /api/days:
+    get:
+      description: Get list of astronomy days with optional name filter
+      parameters:
+      - description: Filter by day name
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List days
+      tags:
+      - Days
+    post:
+      consumes:
+      - application/json
+      description: Create new astronomy day (moderator only)
+      parameters:
+      - description: Day data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.serviceCreateDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create new day
+      tags:
+      - Days
+  /api/days/{id}:
+    delete:
+      description: Soft delete astronomy day (moderator only)
+      parameters:
+      - description: Day ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete day
+      tags:
+      - Days
+    get:
+      description: Get astronomy day details by ID
+      parameters:
+      - description: Day ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/repository.Day'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get day by ID
+      tags:
+      - Days
+    put:
+      consumes:
+      - application/json
+      description: Update astronomy day (moderator only)
+      parameters:
+      - description: Day ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.serviceUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update day
+      tags:
+      - Days
+  /api/days/{id}/add-to-draft:
+    post:
+      description: Add day to current user's draft asteroid request
+      parameters:
+      - description: Day ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Add day to draft
+      tags:
+      - Days
+  /api/days/{id}/image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload image for astronomy day (moderator only)
+      parameters:
+      - description: Day ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Image file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Upload day image
+      tags:
+      - Days
+  /api/me:
+    get:
+      description: Get information about currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/repository.PublicUser'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - Profile
+    put:
+      consumes:
+      - application/json
+      description: Update current user's login and/or password
+      parameters:
+      - description: Profile update data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handler.profileUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update current user profile
+      tags:
+      - Profile
+securityDefinitions:
+  BearerAuth:
+    description: 'Введите JWT токен в формате: Bearer {token}'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
